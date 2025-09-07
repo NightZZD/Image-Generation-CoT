@@ -57,7 +57,7 @@ class Showo(ModelMixin, ConfigMixin):
             llm_model_path='',
             codebook_size=8192,
             num_vq_tokens=256,
-            load_from_showo=True,
+            load_from_showo=True, # 加载预训练权重
             **kwargs,
     ):
         super().__init__()
@@ -71,7 +71,7 @@ class Showo(ModelMixin, ConfigMixin):
         self.showo.resize_token_embeddings(self.vocab_size)
         self.output_size = self.vocab_size
 
-        if self.w_clip_vit:
+        if self.w_clip_vit: # 如果启用clip的vit模型，则将1024维的特征与语言模型维度对齐
             self.mm_projector = torch.nn.Sequential(
                 torch.nn.Linear(1024, 2048),
                 torch.nn.GELU(),
